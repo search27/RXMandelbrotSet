@@ -1,0 +1,126 @@
+<html>
+    <head>
+
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="MandelbrotInterface.css">
+        <style>
+            * {
+                box-sizing: border-box; 
+                font-family: "DynaPuff", sans-serif;
+                /* font-family: Arial, Helvetica, sans-serif; */
+
+                color : white;
+                font-weight: bold;
+                text-shadow: 2px 2px 4px rgb(77 181 226 / 50%);
+
+                -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: #ccc;
+                font-size: 15px;
+
+                user-drag: none;
+                -webkit-user-drag: none;
+                user-select: none;
+                -moz-user-select: none;
+                -webkit-user-select: none;
+                -ms-user-select: none;
+            }
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin : 0;
+                padding : 0;
+                overflow: hidden;
+            }
+            
+
+            .notice {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                border-radius: 5px;
+                /* color : white; */
+                letter-spacing: 2px;
+                /* background: linear-gradient(173deg, rgba(218,215,249,1) 0%, rgba(255,255,255,1) 35%, rgba(213,212,252,1) 100%); */
+                
+                padding : 10px 20px;
+                z-index: 99999;
+            }
+            .notice * {
+                color: rgb(136, 170, 255);
+            }
+
+
+        </style>
+
+        <script src="./distFiles/RxInlineWorker.js"></script>
+        <script src="./distFiles/RxFramework.js"></script>
+
+
+        <script>
+
+
+            const init = () => {
+                const defaultStyle = {
+                    font : 'DynaPuff',
+                    fontSize : 33,
+                    borderRadius : 10,
+                    lineWidth : 0.2,
+                };
+                RxCanvasInterface.SetDefaultProperties(defaultStyle);
+                
+
+                const isRenderSelf = false; // Default : true
+                interface = new RxCanvasInterface.Interface(document.body, isRenderSelf);
+
+                // Mouse Events
+                mouseEvt = new RxCanvasInterface.MouseEvents();
+                mouseEvt.SetActive(false);
+                // Setting Mouse Events
+                interface.SetMouseEvents(mouseEvt);
+                // Setting CanvasMover
+                interface.SetCollisionVisualize(false);
+                canvas = interface.GetCanvas();
+
+                rxMandelbrot = new RxMandelbrot(canvas[0].canvas);
+                anime();
+            }
+
+            const anime = () => {
+                // CanvasMover.Clear();
+                // rxMandelbrot.Clear();
+                rxMandelbrot.update();
+                rxMandelbrot.draw();
+
+                // backBtn.draw(canvas[0].ctx);
+                interface.render();
+                requestAnimationFrame(anime);
+            }
+
+
+            let backBtn;
+            // let CanvasMover;
+            let mouseEvt;
+            let canvas;
+            let rxMandelbrot;
+
+            window.onload = function(){
+                setTimeout(init, 300);
+            }
+        </script>
+
+    </head>
+
+    <body>
+
+        <div class="notice">Support By Cloud Rx (<a href='https://rxapis.com'>https://rxapis.com</a>)</div>
+
+
+    </body>
+</html>
